@@ -2,7 +2,7 @@
 AUTOMAKE_OPTIONS = check-news
 ACLOCAL_AMFLAGS = -I autotools
 
-SUBDIRS = librcksum zlib libzsync doc
+SUBDIRS = librcksum zlib libzsync
 
 bin_PROGRAMS = quicksync
 
