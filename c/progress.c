@@ -39,6 +39,7 @@ struct progress {
 };
 
 int no_progress;
+int force_progress;
 
 /* progbar(chars, percent)
  * (Re)print progress bar with chars out of 20 shown and followed by the given

@@ -15,6 +15,7 @@
 
 struct progress;
 extern int no_progress;
+extern int force_progress;
 
 /* struct progress* = start_progress()
  * Returns a progress structure. Caller is responsible for calling

@@ -474,7 +474,7 @@ int main(int argc, char **argv) {
     {   /* Option parsing */
         int opt;
 
-        while ((opt = getopt(argc, argv, "A:k:o:i:Vsqu:")) != -1) {
+        while ((opt = getopt(argc, argv, "A:k:o:i:Vsqfu:")) != -1) {
             switch (opt) {
             case 'A':           /* Authentication options for remote server */
                 {               /* Scan string as hostname=username:password */
@@ -513,6 +513,9 @@ int main(int argc, char **argv) {
             case 'q':
                 no_progress = 1;
                 break;
+            case 'f':
+                force_progress = 1;
+                break;
             case 'u':
                 referer = strdup(optarg);
                 break;
@@ -532,9 +535,9 @@ int main(int argc, char **argv) {
         exit(3);
     }
 
-    /* No progress display except on terminal */
+    /* No progress display except on terminal, or if progress was forced */
     if (!isatty(0))
-        no_progress = 1;
+        no_progress = !force_progress;
     {   /* Get proxy setting from the environment */
         char *pr = getenv("http_proxy");
 
