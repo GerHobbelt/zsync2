@@ -36,3 +36,4 @@ zlib/libdeflate.a
 zlib/libinflate.a
 zsync
 zsyncmake
+quicksync
