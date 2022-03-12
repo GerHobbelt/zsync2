@@ -44,7 +44,7 @@ See `.travis.yml` for building on Travis CI.
 ## Functional description
 
 zsync is a well known tool for downloading and updating local files from HTTP
-servers using the well known algorithms rsync uses for diffing binary files.
+servers using the well known algorithms rsync used for diffing binary files.
 Therefore, it becomes possible to synchronize modifications by exchanging the
 changed blocks locally using `Range:` requests.
 
