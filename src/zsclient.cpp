@@ -4,7 +4,6 @@
 // system includes
 #include <algorithm>
 #include <deque>
-#include <fstream>
 #include <fcntl.h>
 #include <iostream>
 #include <set>
@@ -13,6 +12,7 @@
 #include <utime.h>
 
 // library includes
+#include <curl/curl.h>
 #include <cpr/cpr.h>
 
 extern "C" {
@@ -270,6 +270,23 @@ namespace zsync2 {
                 session.SetUrl(pathOrUrlToZSyncFile);
                 // request so-called Instance Digest (RFC 3230, RFC 5843)
                 session.SetHeader(cpr::Header{{"want-digest", "sha-512;q=1, sha-256;q=0.9, sha;q=0.2, md5;q=0.1"}});
+
+                // cURL hardcodes the current distro's CA bundle path at build time
+                // in order to use libzsync2 on other distributions (e.g., when used in an AppImage), the right path
+                // to the system CA bundle must be passed to cURL
+                {
+                    const auto* caBundlePath = ca_bundle_path();
+
+                    if (caBundlePath != nullptr) {
+                        // maybe the legacy C code should log this again, but then again, this function should return
+                        // the same result over and over again unless someone deletes a file in the background
+                        issueStatusMessage("Using CA bundle found on system: " + std::string(caBundlePath));
+
+                        auto sslOptions = cpr::SslOptions{};
+                        sslOptions.SetOption({cpr::ssl::CaInfo{caBundlePath}});
+                        session.SetOption(sslOptions);
+                    }
+                }
 
                 // if interested in headers only, download 1 kiB chunks until end of zsync header is found
                 if (headersOnly && zSyncFileStoredLocallyAlready) {
